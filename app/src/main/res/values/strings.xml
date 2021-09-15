@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Animals</string>
+    <string-array name="filter">
+        <item>Name</item>
+        <item>Age</item>
+        <item>Breed</item>
+    </string-array>
+    <string-array name="filterValues">
+        <item>name</item>
+        <item>age</item>
+        <item>breed</item>
+    </string-array>
+    <string-array name="database">
+        <item>SQLite</item>
+        <item>Room</item>
+    </string-array>
+    <string-array name="databaseValues">
+        <item>sqlite</item>
+        <item>room</item>
+    </string-array>
+    <string name="title_activity_preference">PreferenceActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+</resources>
