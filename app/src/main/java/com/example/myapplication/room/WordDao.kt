@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WordDao {
 
-    @Query("SELECT * FROM animals_room ORDER BY name")
+    @Query("SELECT * FROM animals ORDER BY name")
     fun getAllName(): Flow<List<Item>>
 
-    @Query("SELECT * FROM animals_room ORDER BY age")
+    @Query("SELECT * FROM animals ORDER BY age")
     fun getAllAge(): Flow<List<Item>>
 
-    @Query("SELECT * FROM animals_room ORDER BY breed")
+    @Query("SELECT * FROM animals ORDER BY breed")
     fun getAllBreed(): Flow<List<Item>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -25,6 +25,6 @@ interface WordDao {
     @Delete
     suspend fun delete(word: Item)
 
-    @Query("DELETE FROM animals_room")
+    @Query("DELETE FROM animals")
     suspend fun deleteAll()
 }
