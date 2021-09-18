@@ -6,6 +6,7 @@ import android.content.UriMatcher
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
+import com.example.myapplication.App
 
 public class MyContentProvider : ContentProvider() {
     private lateinit var db: SQLiteDatabase

@@ -3,6 +3,7 @@ package com.example.myapplication.sqlite
 import android.content.ContentValues
 import android.content.Context
 import com.example.myapplication.Item
+import com.example.myapplication.App
 
 
 class DBOperation {
@@ -19,7 +20,7 @@ class DBOperation {
             val ageIndex = coursore.getColumnIndex("age")
             val breedIndex = coursore.getColumnIndex("breed")
             while (coursore.moveToNext()) {
-                list.add(Item(coursore.getInt(idIndex), coursore.getString(nameIndex), coursore.getString(ageIndex), coursore.getString(breedIndex)))
+                list.add(Item(coursore.getInt(idIndex), coursore.getString(nameIndex), coursore.getInt(ageIndex), coursore.getString(breedIndex)))
             }
             coursore.close()
             return list
@@ -27,7 +28,7 @@ class DBOperation {
         return emptyList()
     }
 
-    fun  saveAnimal(applicationContext: Context, name:String, age:String, breed:String){
+    fun  saveAnimal(applicationContext: Context, name:String, age:Int, breed:String){
         val contentValues = ContentValues().apply {
             put("name", name)
             put("age", age)
@@ -39,7 +40,7 @@ class DBOperation {
             .insert("animals", null, contentValues)
     }
 
-    fun updateAnimal(applicationContext: Context, name:String, age:String, breed:String, position:Int, sort: String){
+    fun updateAnimal(applicationContext: Context, name:String, age:Int, breed:String, position:Int, sort: String){
         val contentValues = ContentValues().apply {
             put("name", name)
             put("age", age)

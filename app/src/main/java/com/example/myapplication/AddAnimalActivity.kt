@@ -6,8 +6,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.observe
+import androidx.preference.PreferenceManager
+import com.example.myapplication.room.WordRepository
+import com.example.myapplication.room.WordViewModel
+import com.example.myapplication.room.WordViewModelFactory
 import com.example.myapplication.sqlite.DBOperation
 
 class AddAnimalActivity : AppCompatActivity() {
@@ -17,6 +23,9 @@ class AddAnimalActivity : AppCompatActivity() {
     private lateinit var buttonSave: Button
     private lateinit var buttonCancel: Button
     private val operation: DBOperation = DBOperation()
+    private val wordViewModel: WordViewModel by viewModels {
+        WordViewModelFactory((application as App).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +35,23 @@ class AddAnimalActivity : AppCompatActivity() {
         editAge = findViewById(R.id.edit_age)
         editBreed = findViewById(R.id.edit_breed)
         buttonSave = findViewById(R.id.buttonSave)
-        buttonSave.setOnClickListener {
-            operation.saveAnimal(applicationContext, editName.text.toString(), editAge.text.toString(), editBreed.text.toString())
-            finish()
-        }
         buttonCancel = findViewById(R.id.buttonCancel)
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        var database = prefs.getString("prefDatabase", "sqlite").toString()
+
+        buttonSave.setOnClickListener {
+            if (database.length == 6) {
+                operation.saveAnimal(applicationContext, editName.text.toString(), editAge.text.toString().toInt(), editBreed.text.toString())
+                finish()
+            }
+            else {
+                val word = Item( 0, editName.text.toString(), editAge.text.toString().toInt(), editBreed.text.toString())
+                wordViewModel.insert(word)
+                finish()
+            }
+        }
+
         buttonCancel.setOnClickListener {
             val toast = Toast.makeText(this, "The list of animals has not changed", Toast.LENGTH_LONG)
             toast.show()

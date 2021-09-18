@@ -5,8 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.observe
 import androidx.preference.PreferenceManager
+import com.example.myapplication.room.WordViewModel
+import com.example.myapplication.room.WordViewModelFactory
 import com.example.myapplication.sqlite.DBOperation
 
 class EditAnimalActivity : AppCompatActivity() {
@@ -14,9 +18,13 @@ class EditAnimalActivity : AppCompatActivity() {
     private lateinit var editAge: TextView
     private lateinit var editBreed: TextView
     var position = 0
+    var id = 0
     private lateinit var buttonSave: Button
     private lateinit var buttonDelete: Button
     private val operation: DBOperation = DBOperation()
+    private val wordViewModel: WordViewModel by viewModels {
+        WordViewModelFactory((application as App).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,25 +34,40 @@ class EditAnimalActivity : AppCompatActivity() {
         editAge = findViewById(R.id.edit_age)
         editBreed = findViewById(R.id.edit_breed)
         val textView = findViewById<TextView>(R.id.text)
-        if (intent.hasExtra("name") && intent.hasExtra("age") && intent.hasExtra("breed") && intent.hasExtra("position")) {
+        if (intent.hasExtra("id") && intent.hasExtra("name") && intent.hasExtra("age") && intent.hasExtra("breed") && intent.hasExtra("position")) {
+            id = intent.getIntExtra("id", 0)
             position = intent.getIntExtra("position", 0)
             editName.text = intent.getStringExtra("name").toString()
-            editAge.text = intent.getStringExtra("age").toString()
+            editAge.text = intent.getIntExtra("age", 0).toString()
             editBreed.text = intent.getStringExtra("breed").toString()
             textView.text = (position + 1).toString()
         }
         buttonSave = findViewById(R.id.buttonEdit)
+        buttonDelete = findViewById(R.id.buttonDelete)
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         var sort = prefs.getString("prefSort", "name").toString()
-        var database = prefs.getString("prefDatabase", "sqlite")
+        var database = prefs.getString("prefDatabase", "sqlite").toString()
         buttonSave.setOnClickListener {
-            operation.updateAnimal(applicationContext, editName.text.toString(), editAge.text.toString(), editBreed.text.toString(), position, sort)
-            finish()
+            if (database.length == 6) {
+                operation.updateAnimal(applicationContext, editName.text.toString(), editAge.text.toString().toInt(), editBreed.text.toString(), position, sort)
+                finish()
+            }
+            else {
+                val word = Item( id, editName.text.toString(), editAge.text.toString().toInt(), editBreed.text.toString())
+                wordViewModel.update(word)
+                finish()
+            }
         }
-        buttonDelete = findViewById(R.id.buttonDelete)
         buttonDelete.setOnClickListener {
-            operation.deleteAnimal(applicationContext, position, sort)
-            finish()
+            if (database.length == 6) {
+                operation.deleteAnimal(applicationContext, position, sort)
+                finish()
+            }
+            else {
+                val word = Item( id, editName.text.toString(), editAge.text.toString().toInt(), editBreed.text.toString())
+                wordViewModel.delete(word)
+                finish()
+            }
         }
     }
 

@@ -3,9 +3,6 @@ package com.example.myapplication
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -46,7 +43,7 @@ class DataAdapter(items: MutableList<Item>, listener: OnItemClickListener) : Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item: Item = items[position]
         holder.nameView.text = item.name
-        holder.ageView.text = item.age
+        holder.ageView.text = item.age.toString()
         holder.breedView.text = item.breed
         holder.itemView.setOnClickListener { listener.onItemClick(item, position) }
     }
