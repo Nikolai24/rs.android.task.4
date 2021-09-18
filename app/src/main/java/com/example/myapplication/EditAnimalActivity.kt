@@ -34,14 +34,16 @@ class EditAnimalActivity : AppCompatActivity() {
         editAge = findViewById(R.id.edit_age)
         editBreed = findViewById(R.id.edit_breed)
         val textView = findViewById<TextView>(R.id.text)
-        if (intent.hasExtra("id") && intent.hasExtra("name") && intent.hasExtra("age") && intent.hasExtra("breed") && intent.hasExtra("position")) {
-            id = intent.getIntExtra("id", 0)
+        if (intent.hasExtra("item") && intent.hasExtra("position")) {
+            var item: Item = intent.getSerializableExtra("item") as Item
+            id = item.id
+            editName.text = item.name
+            editAge.text = item.age.toString()
+            editBreed.text = item.breed
             position = intent.getIntExtra("position", 0)
-            editName.text = intent.getStringExtra("name").toString()
-            editAge.text = intent.getIntExtra("age", 0).toString()
-            editBreed.text = intent.getStringExtra("breed").toString()
             textView.text = (position + 1).toString()
         }
+
         buttonSave = findViewById(R.id.buttonEdit)
         buttonDelete = findViewById(R.id.buttonDelete)
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)

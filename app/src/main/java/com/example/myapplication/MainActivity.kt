@@ -33,10 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun startEditActivity(item: Item, position: Int) {
         val intent = Intent(this@MainActivity, EditAnimalActivity::class.java)
-        intent.putExtra("id", item.id)
-        intent.putExtra("name", item.name)
-        intent.putExtra("age", item.age)
-        intent.putExtra("breed", item.breed)
+          intent.putExtra("item", item)
         intent.putExtra("position", position)
         startActivity(intent)
     }
